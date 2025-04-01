@@ -1,0 +1,48 @@
+name: Build and Push to ACR
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'app/**'
+      - 'static/**'
+      - 'templates/**'
+      - 'deployment/Dockerfile'
+
+env:
+  ACR_NAME: kyungsek8sclusterregistry.azurecr.io
+  IMAGE_NAME: azure-fastapi-bot
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Log in to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Log in to ACR
+      run: az acr login --name ${{ env.ACR_NAME }}
+
+    - name: Build and push Docker image
+      run: |
+        IMAGE_TAG=$(echo $GITHUB_SHA | cut -c1-7)
+        docker build -t $ACR_NAME/$IMAGE_NAME:$IMAGE_TAG -f deployment/Dockerfile .
+        docker push $ACR_NAME/$IMAGE_NAME:$IMAGE_TAG
+        echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+
+    - name: Update image tag in GitOps repo
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git clone https://x-access-token:${GITHUB_TOKEN}@github.com/kyungse/azure-fastapi-bot.git
+        cd azure-fastapi-bot/deployment
+        sed -i "s|image: .*|image: $ACR_NAME/$IMAGE_NAME:${IMAGE_TAG}|" deployment.yaml
+        git config user.name "github-actions"
+        git config user.email "actions@github.com"
+        git commit -am "Update image tag to $IMAGE_TAG"
+        git push origin main

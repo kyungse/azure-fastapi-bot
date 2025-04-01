@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+jinja2
+python-multipart
+requests
+azure-identity
+azure-mgmt-resource
+azure-mgmt-compute
+python-dotenv
+azure-containerregistry

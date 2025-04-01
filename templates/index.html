@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Azure Viewer</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/script.js" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Azure Resource Viewer</h1>
+      <p class="subtitle">Azure 리소스를 한눈에 관리하세요</p>
+    </header>
+
+    <main>
+      <section class="card">
+        <div class="card-header">
+          <h2>리소스 그룹</h2>
+          <button class="primary-button" onclick="fetchResourceGroups()">
+            <span>리소스 그룹 불러오기</span>
+          </button>
+        </div>
+        <div class="card-content">
+          <ul id="resource-groups-list" class="list"></ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>가상 머신 목록</h2>
+        </div>
+        <div class="card-content">
+          <div class="input-group">
+            <input type="text" id="vm-group-input" placeholder="리소스 그룹 이름을 입력하세요" />
+            <button class="primary-button" onclick="fetchVMsInGroup()">
+              <span>VM 목록 불러오기</span>
+            </button>
+          </div>
+          <ul id="vm-list" class="list"></ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>VM 상세 정보</h2>
+        </div>
+        <div class="card-content">
+          <div class="input-group">
+            <input type="text" id="vm-detail-group" placeholder="리소스 그룹 이름" />
+            <input type="text" id="vm-name-input" placeholder="VM 이름" />
+            <button class="primary-button" onclick="fetchVMDetails()">
+              <span>상세 정보 불러오기</span>
+            </button>
+          </div>
+          <div class="detail-display">
+            <pre id="vm-detail-display"></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>ACR 레포지토리</h2>
+        </div>
+        <div class="card-content">
+          <div class="input-group">
+            <input type="text" id="acr-name-input" placeholder="ACR 이름을 입력하세요" />
+            <button class="primary-button" onclick="fetchACRImages()">
+              <span>레포지토리 불러오기</span>
+            </button>
+          </div>
+          <ul id="acr-image-list" class="list"></ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>레포지토리 태그 정보</h2>
+        </div>
+        <div class="card-content">
+          <div class="input-group">
+            <input type="text" id="tag-acr-input" placeholder="ACR 이름을 입력하세요" />
+            <input type="text" id="tag-repo-input" placeholder="레포지토리 이름을 입력하세요" />
+            <button class="primary-button" onclick="fetchACRTagsFromInput()">
+              <span>태그 목록 불러오기</span>
+            </button>
+          </div>
+          <ul id="tag-list" class="list"></ul>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
