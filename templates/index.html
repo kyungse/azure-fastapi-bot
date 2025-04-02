@@ -63,7 +63,19 @@
 
       <section class="card">
         <div class="card-header">
-          <h2>ACR 레포지토리</h2>
+          <h2>ACR 목록</h2>
+          <button class="primary-button" onclick="fetchACRList()">
+            <span>ACR 목록 불러오기</span>
+          </button>
+        </div>
+        <div class="card-content">
+          <ul id="acr-list" class="list"></ul>
+        </div>
+      </section>
+      
+      <section class="card">
+        <div class="card-header">
+          <h2>ACR 레지스트리 내 레포지토리 목록</h2>
         </div>
         <div class="card-content">
           <div class="input-group">

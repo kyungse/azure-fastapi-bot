@@ -178,3 +178,36 @@ async function fetchACRTagsFromInput() {
 		document.getElementById('tag-list').innerHTML = `<li><div class="tag-error">태그 정보를 가져오는데 실패했습니다.</div></li>`;
 	}
 }
+
+async function fetchACRList() {
+	try {
+		const res = await fetch('/api/acr');
+		const data = await res.json();
+		const registries = data.registries;
+		const list = document.getElementById('acr-list');
+		list.innerHTML = '';
+
+		if (!registries || registries.length === 0) {
+			list.innerHTML = '<li><div class="item-content">ACR이 없습니다.</div></li>';
+			return;
+		}
+
+		registries.forEach(acr => {
+			const li = document.createElement('li');
+			li.innerHTML = `
+				<div class="item-content">
+					<div class="item-info">
+						<span class="item-name">${acr.name}</span>
+						<span class="item-location">${acr.location}</span>
+					</div>
+					<span class="item-status succeeded">${acr.sku}</span>
+				</div>
+			`;
+			list.appendChild(li);
+		});
+	} catch (error) {
+		console.error('Error fetching ACR list:', error);
+		const list = document.getElementById('acr-list');
+		list.innerHTML = `<li><div class="item-content">ACR 목록을 가져오는데 실패했습니다.</div></li>`;
+	}
+}

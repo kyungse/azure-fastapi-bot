@@ -8,3 +8,4 @@ azure-mgmt-resource
 azure-mgmt-compute
 python-dotenv
 azure-containerregistry
+azure-mgmt-containerregistry

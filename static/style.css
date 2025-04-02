@@ -440,3 +440,8 @@ input[type="text"]:focus {
 	padding: 0.5rem 0;
 	font-weight: bold;
 }
+
+.item-status.succeeded {
+	background-color: #e6f4ea;
+	color: #1e7e34;
+}

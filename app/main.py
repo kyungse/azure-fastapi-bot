@@ -6,6 +6,7 @@ from fastapi.responses import HTMLResponse
 from azure.containerregistry import ContainerRegistryClient
 from azure.identity import ClientSecretCredential, DefaultAzureCredential
 from azure.mgmt.compute import ComputeManagementClient
+from azure.mgmt.containerregistry import ContainerRegistryManagementClient
 from azure.mgmt.resource import ResourceManagementClient
 
 import os
@@ -109,6 +110,25 @@ def get_vm(
         "os_type": vm_obj.storage_profile.os_disk.os_type,
         "size": vm_obj.hardware_profile.vm_size,
         "status": state[0] if state else "Unknown"
+    }
+
+@app.get("/api/acr")
+def list_acr_registries():
+    subscription_id = os.getenv("AZURE_SUBSCRIPTION_ID")
+    credential = DefaultAzureCredential()
+    client = ContainerRegistryManagementClient(credential, subscription_id)
+
+    registries = client.registries.list()
+    return {
+        "registries": [
+            {
+                "name": reg.name,
+                "login_server": reg.login_server,
+                "location": reg.location,
+                "sku": reg.sku.name,
+                "admin_user_enabled": reg.admin_user_enabled
+            } for reg in registries
+        ]
     }
 
 @app.get("/api/acr/{registry}/repositories")
