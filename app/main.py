@@ -131,13 +131,14 @@ def list_acr_tags(
     credential = DefaultAzureCredential()
     client = ContainerRegistryClient(endpoint=url, credential=credential)
 
-    tags = client.list_tag_properties(repository=repository)
-    tag_list = []
+    client_tags = client.list_tag_properties(repository=repository)
+    sorted_tags = sorted(client_tags, key=lambda tag: tag.created_on, reverse=True)
 
+    tag_list = []
     kst = timezone(timedelta(hours=9))
-    for tag in tags:
-        created = tag.created_on
-        created_kst = created.astimezone(kst).strftime("%Y-%m-%d %H:%M:%S KST")
+
+    for tag in sorted_tags:
+        created_kst = tag.created_on.astimezone(kst).strftime("%Y-%m-%d %H:%M:%S KST")
         tag_list.append({
             "name": tag.name,
             "created_on": created_kst
