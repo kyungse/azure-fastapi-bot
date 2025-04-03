@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: fastapi
-        image: kyungsek8sclusterregistry.azurecr.io/fastapi-azure-app:latest
+        image: kyungsek8sclusterregistry.azurecr.io/azure-fastapi-bot:d64ce55
         ports:
         - containerPort: 8000
         envFrom:
