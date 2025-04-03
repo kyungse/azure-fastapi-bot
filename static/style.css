@@ -445,3 +445,21 @@ input[type="text"]:focus {
 	background-color: #e6f4ea;
 	color: #1e7e34;
 }
+
+.card-content .list {
+	max-height: 300px; 
+	overflow-y: auto;
+}
+
+.card-content .list::-webkit-scrollbar {
+	width: 6px;
+}
+
+.card-content .list::-webkit-scrollbar-thumb {
+	background-color: var(--border-color);
+	border-radius: 4px;
+}
+
+.card-content .list::-webkit-scrollbar-track {
+	background: transparent;
+}
